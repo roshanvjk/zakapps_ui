@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="product.css" />
+  </head>
+  <body>
+    <div id="header"></div>
+
+    <div class="product-page">
+      <!-- LEFT IMAGE -->
+      <div class="product-gallery">
+        <img id="productImage" />
+      </div>
+
+      <!-- RIGHT DETAILS -->
+      <div class="product-info">
+        <h1 id="productName"></h1>
+
+        <p class="price" id="productPrice"></p>
+
+        <div id="productRating"></div>
+
+        <p class="description">
+          Your new cooking BFF! You can add this to virtually everything.
+        </p>
+
+        <div class="actions">
+          <button class="add-cart" onclick="addToCart()">ADD TO CART</button>
+          <button class="buy-now" onclick="buyNow()">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-tabs">
+      <div class="tab-header">
+        <button class="tab-btn active" data-tab="desc">DESCRIPTION</button>
+        <button class="tab-btn" data-tab="reviews">REVIEWS</button>
+        <button class="tab-btn" data-tab="videos">VIDEOS</button>
+        <button class="tab-btn" data-tab="comments">COMMENTS</button>
+      </div>
+
+      <div class="tab-content">
+        <div class="tab-panel active" id="desc"></div>
+
+        <div class="tab-panel" id="reviews"></div>
+
+        <div class="tab-panel" id="videos"></div>
+
+        <div class="tab-panel" id="comments"></div>
+      </div>
+    </div>
+    <div id="footer"></div>
+    <script>
+      fetch("footer.html")
+        .then((res) => res.text())
+        .then((data) => (document.getElementById("footer").innerHTML = data));
+
+      fetch("header.html")
+        .then((res) => res.text())
+        .then((data) => (document.getElementById("header").innerHTML = data));
+
+      const product = JSON.parse(localStorage.getItem("selectedProduct"));
+
+      if (!product) {
+        alert("Product not found");
+        window.location.href = "shop.html";
+      }
+
+      document.getElementById("productImage").src = product.image;
+      document.getElementById("productName").innerText = product.name;
+      document.getElementById(
+        "productPrice"
+      ).innerText = `$${product.price.toFixed(2)}`;
+
+      document.getElementById("productRating").innerHTML = product.rating
+        ? `<span class="stars">${"★".repeat(product.rating)}</span>
+       <span class="review-count">(${product.reviewsCount} Reviews)</span>`
+        : `<span class="no-reviews">No reviews</span>`;
+
+      function addToCart() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const found = cart.find((item) => item.name === product.name);
+        if (found) {
+          found.qty += 1;
+        } else {
+          cart.push({ ...product, qty: 1 });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert("Product added to cart!");
+      }
+
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const panels = document.querySelectorAll(".tab-panel");
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tabButtons.forEach((b) => b.classList.remove("active"));
+          panels.forEach((p) => p.classList.remove("active"));
+
+          btn.classList.add("active");
+          document.getElementById(btn.dataset.tab).classList.add("active");
+        });
+      });
+
+      const desc = product.description;
+
+      document.getElementById("desc").innerHTML = `
+  <p>${desc.intro}</p>
+
+  ${desc.usage.map((line) => `<p>${line}</p>`).join("")}
+
+  <p><strong>HEAT LEVEL:</strong> ${desc.heatLevel}</p>
+
+  <p><strong>INGREDIENTS:</strong><br>
+  ${desc.ingredients}</p>
+
+  <p><strong>ALLERGENS:</strong><br>
+  ${desc.allergens}</p>
+
+  <p><strong>STORAGE:</strong><br>
+  ${desc.storage}</p>
+`;
+
+      document.getElementById("reviews").innerHTML =
+        product.reviewsCount && product.reviewsCount > 0
+          ? `
+      <div class="review-item">
+        <div class="stars">⭐ ${product.rating}/5</div>
+        <div class="review-count">${product.reviewsCount} Reviews</div>
+      </div>
+    `
+          : "<p>No reviews yet.</p>";
+
+      document.getElementById("videos").innerHTML = product.videos?.length
+        ? product.videos
+            .map(
+              (v) =>
+                `<div class="video-wrapper"><iframe src="${v}"></iframe></div>`
+            )
+            .join("")
+        : "No videos available.";
+
+      document.getElementById("comments").innerHTML = product.comments?.length
+        ? `
+      <ul class="comments-list">
+        ${product.comments
+          .map((c) => `<li class="comment-item">${c}</li>`)
+          .join("")}
+      </ul>
+    `
+        : "<p>No comments yet.</p>";
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+
+        const cartCountEl = document.getElementById("cartCount");
+        if (cartCountEl) cartCountEl.innerText = totalQty;
+      }
+
+      function addToCart() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const found = cart.find((item) => item.name === product.name);
+        if (found) {
+          found.qty += 1;
+        } else {
+          cart.push({ ...product, qty: 1 });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+      }
+
+      function buyNow() {
+        window.location.href = "order-placed.html";
+      }
+    </script>
+  </body>
+</html>

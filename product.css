@@ -1,0 +1,181 @@
+.product-page {
+  max-width: 1200px;
+  margin: 60px auto 40px;
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  gap: 80px;
+}
+
+.product-gallery {
+  max-width: 350px;
+}
+
+.product-gallery img {
+  width: 100%;
+  max-width: 350px;
+  max-height: 350px;
+  height: auto;
+  border: 1px solid #ddd;
+  padding: 20px;
+  object-fit: contain;
+}
+
+.product-info h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+#productRating {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #ff8c2b;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 30px;
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+}
+
+.add-cart {
+  padding: 14px 36px;
+  border: 1px solid #000;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-cart:hover {
+  padding: 14px 36px;
+  border: 1px solid #ffffff;
+  background: #000000;
+  font-size: 14px;
+  cursor: pointer;
+  color: white;
+}
+
+.buy-now {
+  padding: 14px 36px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.buy-now:hover {
+  padding: 14px 36px;
+  border: 1px solid black;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  color: black;
+}
+
+.product-tabs {
+  max-width: 1200px;
+  margin: 80px auto;
+  border-top: 1px solid #e5e5e5;
+}
+
+.tab-header {
+  display: flex;
+  gap: 50px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 30px;
+  justify-content: space-evenly;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  letter-spacing: 1px;
+  padding: 15px 0;
+  cursor: pointer;
+  color: #777;
+  position: relative;
+}
+
+.tab-btn.active {
+  color: #000;
+  font-weight: 600;
+}
+
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2px;
+  background: #000;
+}
+
+.tab-content {
+  padding: 40px 20px 0;
+}
+
+.tab-panel {
+  display: none;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.tab-panel p {
+  margin-bottom: 14px;
+  line-height: 1.7;
+  color: #333;
+  font-size: 14px;
+}
+
+.tab-panel strong {
+  display: block;
+  margin-top: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.review-item,
+.comment-item {
+  margin-bottom: 15px;
+}
+
+.video-wrapper {
+  margin-bottom: 30px;
+}
+
+.video-wrapper iframe {
+  width: 560px;
+  height: 315px;
+  border: none;
+}
+
+.comments-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.comment-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}

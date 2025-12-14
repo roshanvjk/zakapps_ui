@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="shop.css" />
+  </head>
+  <body>
+    <div id="header"></div>
+    <section class="products-hero">
+      <div class="hero-images">
+        <div class="hero-img img-1"></div>
+        <div class="hero-img img-2"></div>
+        <div class="hero-img img-3"></div>
+        <div class="hero-img img-4"></div>
+      </div>
+
+      <div class="hero-overlay">
+        <h1>PRODUCTS</h1>
+      </div>
+    </section>
+    <section class="products-toolbar">
+      <div class="toolbar-left">
+        <h3 id="productCount">Products (0)</h3>
+      </div>
+
+      <div class="toolbar-right">
+        <!-- LEFT GROUP -->
+        <div class="toolbar-controls">
+          <button class="filter-btn">
+            <img src="../Assests/sort.png" class="filter-icon" alt="" />
+            Filter
+          </button>
+
+          <span class="divider"></span>
+
+          <div class="view-toggle">
+            <img src="../Assests/menu.png" alt="Grid view" />
+            <img src="../Assests/list.png" alt="List view" />
+          </div>
+        </div>
+
+        <div class="sort-wrapper">
+          <label>Sort By:</label>
+          <select id="sortSelect">
+            <option value="" selected disabled>Sort products</option>
+            <option value="az">Alphabetically, A-Z</option>
+            <option value="za">Alphabetically, Z-A</option>
+            <option value="priceLow">Price, Low to High</option>
+            <option value="priceHigh">Price, High to Low</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <hr class="toolbar-divider" />
+
+    <section class="filter-panel" id="filterPanel">
+      <div class="filter-group">
+        <h4>Categories</h4>
+        <label
+          ><input type="checkbox" value="Chili Oil/Okazu" /> Chili
+          Oil/Okazu</label
+        >
+        <label><input type="checkbox" value="Miso Soup" /> Miso Soup</label>
+        <label
+          ><input type="checkbox" value="Instant Matcha" /> Instant
+          Matcha</label
+        >
+      </div>
+
+      <div class="filter-group">
+        <h4>Type</h4>
+        <label><input type="checkbox" value="Single Pack" /> Single Pack</label>
+        <label><input type="checkbox" value="Multi Set" /> Multi Set</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Flavours</h4>
+        <label><input type="checkbox" value="Spicy" /> Spicy</label>
+        <label><input type="checkbox" value="Classic" /> Classic</label>
+        <label><input type="checkbox" value="Green Tea" /> Green Tea</label>
+      </div>
+    </section>
+    <section class="products-grid" id="productsGrid"></section>
+    <div id="footer"></div>
+    <script>
+      fetch("footer.html")
+        .then((res) => res.text())
+        .then((data) => (document.getElementById("footer").innerHTML = data));
+
+      fetch("header.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("header").innerHTML = data;
+        });
+
+      const products = [
+        {
+          name: "OKAZU Chili Miso (230ml)",
+          price: 11.25,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyCrsTSJyW9Gx3CUua8ss0oywioV5kfC_3ER1qJ3uATg&s",
+          rating: 4,
+          reviewsCount: 42,
+          category: "Chili Oil/Okazu",
+          type: "Single Pack",
+          flavour: "Spicy",
+          description: {
+            intro:
+              "A savory chili miso condiment that enhances anything you eat.",
+            usage: [
+              "Use on noodles, eggs, veggies, or toast.",
+              "Mix into mayo for a spicy dip.",
+            ],
+            heatLevel: "Medium",
+            ingredients:
+              "Miso paste, sesame oil, sunflower oil, garlic, chili powder.",
+            allergens: "Contains sesame and soy.",
+            storage: "Refrigerate after opening.",
+          },
+          videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
+          comments: [
+            "Incredible flavor!",
+            "Use it on everything.",
+            "Super addictive.",
+          ],
+        },
+        {
+          name: "Teriyaki Glaze (500ml)",
+          price: 8.5,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhff-P_rT3UmAT38niJRU4cEOqWETceMEMNA&s",
+          rating: 5,
+          reviewsCount: 63,
+          category: "Miso Soup",
+          type: "Single Pack",
+          flavour: "Classic",
+          description: {
+            intro: "A glossy, umami-packed sauce to glaze your grilled dishes.",
+            usage: [
+              "Use on wings, tofu, or vegetables.",
+              "Mix into stir-fries or marinades.",
+            ],
+            heatLevel: "No heat",
+            ingredients: "Soy sauce, sugar, mirin, ginger, garlic.",
+            allergens: "Contains soy and wheat.",
+            storage: "Keep refrigerated after opening.",
+          },
+          videos: ["https://www.youtube.com/embed/VjFjSXZHVJY"],
+          comments: ["Sweet and balanced!", "Restaurant-quality flavor."],
+        },
+        {
+          name: "Spicy Garlic Oil (250ml)",
+          price: 15,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8VzUmDeT2NL2bF0btkm2womyuNa_HssQRVA&s",
+          rating: 4,
+          reviewsCount: 79,
+          category: "Chili Oil/Okazu",
+          type: "Multi Set",
+          flavour: "Spicy",
+          description: {
+            intro: "Crispy garlic meets spicy chili for a bold condiment.",
+            usage: [
+              "Perfect for dumplings and noodles.",
+              "Blend into sauces for a heat kick.",
+            ],
+            heatLevel: "Hot",
+            ingredients: "Garlic, chili, sesame oil, soy sauce, sugar.",
+            allergens: "Contains soy.",
+            storage: "Store away from direct sunlight.",
+          },
+          videos: ["https://www.youtube.com/embed/49f1w9kWkW0"],
+          comments: [
+            "Just the right amount of heat.",
+            "A must-have for spice lovers!",
+          ],
+        },
+        {
+          name: "Japanese Curry Blocks (Medium)",
+          price: 10.5,
+          oldPrice: 12,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSX9X4_28xlpdOQaSAtoOR3heTuFjaCbBaHgA&s",
+          rating: 4,
+          reviewsCount: 91,
+          category: "Miso Soup",
+          type: "Single Pack",
+          flavour: "Classic",
+          description: {
+            intro: "Thick, tasty curry sauce base with rich spices.",
+            usage: [
+              "Cook with meat or veggies and serve with rice.",
+              "Control thickness by adding water.",
+            ],
+            heatLevel: "Medium",
+            ingredients: "Curry powder, wheat flour, vegetable oil, soy sauce.",
+            allergens: "Contains wheat, soy.",
+            storage: "Store in a dry, cool area.",
+          },
+          videos: ["https://www.youtube.com/embed/_PpzI5Y4JhE"],
+          comments: ["Authentic Japanese flavor.", "Family favorite!"],
+        },
+        {
+          name: "Matcha Latte Starter Kit",
+          price: 49.99,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDSivE6K8pTZzIOGbLn4wjIm70TF7RZuLBLQ&s",
+          rating: 5,
+          reviewsCount: 110,
+          category: "Instant Matcha",
+          type: "Multi Set",
+          flavour: "Green Tea",
+          description: {
+            intro: "Your daily zen-in-a-cup experience.",
+            usage: [
+              "Whisk with milk for a creamy drink.",
+              "Add to smoothies for an antioxidant boost.",
+            ],
+            heatLevel: "No heat",
+            ingredients: "Pure matcha powder, bamboo whisk, scoop.",
+            allergens: "None.",
+            storage: "Keep sealed to preserve freshness.",
+          },
+          videos: ["https://www.youtube.com/embed/2FDCQy3gHLw"],
+          comments: ["The matcha is top quality.", "Great kit for beginners."],
+        },
+        {
+          name: "Ramen Variety Bundle (6-Pack)",
+          price: 39,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfQT-aTkYnj2_aDhxUvuP4ZopWrE9Z8vfGag&s",
+          rating: 5,
+          reviewsCount: 156,
+          category: "Miso Soup",
+          type: "Multi Set",
+          flavour: "Spicy",
+          description: {
+            intro: "A flavor-packed ramen tour through Japan.",
+            usage: [
+              "Boil noodles for 4 minutes.",
+              "Add toppings like egg or seaweed.",
+            ],
+            heatLevel: "Mild–Hot",
+            ingredients: "Wheat noodles, vegetable broth, dried garnish.",
+            allergens: "Contains wheat, soy.",
+            storage: "Store at room temperature.",
+          },
+          videos: ["https://www.youtube.com/embed/hi3xkK7pb6s"],
+          comments: ["A lifesaver for quick meals!", "Loved every flavor."],
+        },
+        {
+          name: "Umeboshi Pickled Plums (150g)",
+          price: 18,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6MZ2GAa2zH-msVS4qFPuJsb4Kmh3AoUSRMg&s",
+          rating: 3,
+          reviewsCount: 33,
+          category: "Miso Soup",
+          type: "Single Pack",
+          flavour: "Classic",
+          description: {
+            intro: "Traditional salted plums known for their tangy punch.",
+            usage: [
+              "Eat with rice or inside onigiri.",
+              "Chop into sauces or dressings.",
+            ],
+            heatLevel: "No heat",
+            ingredients: "Ume plums, shiso leaves, salt.",
+            allergens: "None.",
+            storage: "Refrigerate after opening.",
+          },
+          videos: ["https://www.youtube.com/embed/0Y1TkxkP1C8"],
+          comments: ["Sour and delicious!", "Very authentic."],
+        },
+        {
+          name: "Sushi Making Kit Deluxe",
+          price: 40,
+          oldPrice: 48.5,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyAgdltb85RyVERh1pTFwmOx9KHjHfl9vC9w&s",
+          rating: 5,
+          reviewsCount: 192,
+          category: "Instant Matcha",
+          type: "Multi Set",
+          flavour: "Classic",
+          description: {
+            intro: "A complete sushi-making experience for your home kitchen.",
+            usage: [
+              "Includes rice paddle, bamboo mat, and seaweed.",
+              "Instructions great for beginners.",
+            ],
+            heatLevel: "No heat",
+            ingredients: "Nori sheets, vinegar, utensils.",
+            allergens: "Nori processed in a facility with shellfish.",
+            storage: "Keep dry.",
+          },
+          videos: ["https://www.youtube.com/embed/tVZJrBOqgP4"],
+          comments: ["Super fun!", "Everything you need in one box."],
+        },
+        {
+          name: "Instant Miso Soup Pack (10 servings)",
+          price: 22,
+          image:
+            "https://en.bentoandco.com/cdn/shop/products/2_943f0296-befe-4417-bdff-ce0955718aaf.png?v=1667963110",
+          rating: 5,
+          reviewsCount: 150,
+          category: "Miso Soup",
+          type: "Single Pack",
+          flavour: "Classic",
+          description: {
+            intro: "Traditional flavor in seconds — just add hot water.",
+            usage: [
+              "Great with tofu and scallions.",
+              "Enjoy on busy mornings.",
+            ],
+            heatLevel: "Mild",
+            ingredients: "Miso paste, seaweed, tofu bits.",
+            allergens: "Contains soy.",
+            storage: "Keep sealed and dry.",
+          },
+          videos: ["https://www.youtube.com/embed/7ZwnIhgRplE"],
+          comments: ["Perfect for travel!", "Tastes homemade."],
+        },
+        {
+          name: "Yuzu Hot Sauce (150ml)",
+          price: 12,
+          oldPrice: 14.5,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS-FzHSRw1dukXFIVovz_LGAHAZJBBj-Q2FQ&s",
+          rating: 4,
+          reviewsCount: 62,
+          category: "Chili Oil/Okazu",
+          type: "Single Pack",
+          flavour: "Spicy",
+          description: {
+            intro: "Bright yuzu citrus meets satisfying chili heat.",
+            usage: [
+              "Use on seafood, noodles, or tofu.",
+              "Mix with soy sauce for dipping.",
+            ],
+            heatLevel: "Medium",
+            ingredients: "Yuzu extract, chili, vinegar, garlic.",
+            allergens: "May contain soy.",
+            storage: "Refrigerate after opening.",
+          },
+          videos: ["https://www.youtube.com/embed/ikHLx0sO4xE"],
+          comments: [
+            "Fresh, vibrant flavor!",
+            "Perfect balance of citrus and spice.",
+          ],
+        },
+        {
+          name: "OKAZU Curry Miso (230ml)",
+          price: 11.99,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyCrsTSJyW9Gx3CUua8ss0oywioV5kfC_3ER1qJ3uATg&s",
+          rating: 4,
+          reviewsCount: 58,
+          category: "Chili Oil/Okazu",
+          type: "Single Pack",
+          flavour: "Classic",
+          description: {
+            intro: "A rich curry-flavoured miso condiment with deep umami.",
+            usage: [
+              "Stir into rice bowls, noodles, or roasted veggies.",
+              "Use as a base for quick Japanese-style curry sauces.",
+            ],
+            heatLevel: "Mild",
+            ingredients:
+              "Miso paste, curry spices, sesame oil, sunflower oil, garlic, chili.",
+            allergens: "Contains sesame and soy.",
+            storage: "Refrigerate after opening.",
+          },
+          videos: ["https://www.youtube.com/embed/1w7OgIMMRc4"],
+          comments: ["Great curry aroma!", "Super versatile in cooking."],
+        },
+        {
+          name: "Original Instant Miso Soup (4 servings)",
+          price: 9.5,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyeXHBB63X7a99Kfod7x1qzO32RYn_MTYx_A&s",
+          rating: 5,
+          reviewsCount: 120,
+          category: "Miso Soup",
+          type: "Single Pack",
+          flavour: "Classic",
+          description: {
+            intro:
+              "Naturally fermented instant miso soup for everyday comfort.",
+            usage: [
+              "Mix paste with hot water for a quick soup.",
+              "Add tofu and vegetables for a fuller meal.",
+            ],
+            heatLevel: "Mild",
+            ingredients:
+              "Miso paste, sake lees, garlic powder, onion powder, sea salt.",
+            allergens: "Contains soy.",
+            storage: "Keep refrigerated after opening.",
+          },
+          videos: ["https://www.youtube.com/embed/2X_2IdybTV0"],
+          comments: [
+            "Tastes like restaurant miso.",
+            "Super convenient to make.",
+          ],
+        },
+        {
+          name: "Black Pepper Instant Miso Soup (140g)",
+          price: 10.25,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGzBMLVQzgroCng4gAjKX5D_tcYWyH7S_nvg&s",
+          rating: 4,
+          reviewsCount: 64,
+          category: "Miso Soup",
+          type: "Single Pack",
+          flavour: "Spicy",
+          description: {
+            intro: "Classic miso soup with a bold black pepper kick.",
+            usage: [
+              "Enjoy as a warming drink on its own.",
+              "Pair with rice bowls or noodles.",
+            ],
+            heatLevel: "Medium",
+            ingredients:
+              "Miso paste, black pepper, garlic powder, onion powder, sea salt.",
+            allergens: "Contains soy.",
+            storage: "Store in a cool, dry place.",
+          },
+          videos: ["https://www.youtube.com/embed/_H5mFv1T1kY"],
+          comments: [
+            "Love the peppery taste!",
+            "Nice heat without being too much.",
+          ],
+        },
+        {
+          name: "Ceremonial Matcha Gift Set",
+          price: 69.99,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkQ6Zuzn5VS56aSl26VO4l4KxbBSURZCEPGQ&s",
+          rating: 5,
+          reviewsCount: 95,
+          category: "Instant Matcha",
+          type: "Multi Set",
+          flavour: "Green Tea",
+          description: {
+            intro: "Premium ceremonial matcha kit for mindful tea rituals.",
+            usage: [
+              "Whisk with hot water for traditional usucha.",
+              "Use in lattes for a smooth, vibrant drink.",
+            ],
+            heatLevel: "No heat",
+            ingredients:
+              "Ceremonial grade matcha powder, chawan, chasen, chashaku.",
+            allergens: "None.",
+            storage: "Store matcha in an airtight container away from light.",
+          },
+          videos: ["https://www.youtube.com/embed/4qO3ZxZ7p0k"],
+          comments: [
+            "Beautiful set and great quality.",
+            "Makes amazing matcha lattes.",
+          ],
+        },
+        {
+          name: "Sesame Chili Oil (Rayu Style, 200ml)",
+          price: 13.75,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxFDfkIbLMT7sVAQekCLkOXcJVGIYfprj-Ag&s",
+          rating: 4,
+          reviewsCount: 51,
+          category: "Chili Oil/Okazu",
+          type: "Single Pack",
+          flavour: "Spicy",
+          description: {
+            intro:
+              "Traditional Japanese-style sesame chili oil with gentle heat.",
+            usage: [
+              "Drizzle over ramen, gyoza, or fried rice.",
+              "Use in dipping sauces and salad dressings.",
+            ],
+            heatLevel: "Mild–Medium",
+            ingredients: "Sesame oil, red pepper.",
+            allergens: "Contains sesame.",
+            storage: "Store in a cool place away from direct sunlight.",
+          },
+          videos: ["https://www.youtube.com/embed/3GwjfUFyY6M"],
+          comments: [
+            "Great aroma of sesame.",
+            "Perfect finishing oil for noodles.",
+          ],
+        },
+        {
+          name: "Myojo Japanese Style Instant Noodles",
+          price: 42,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZU097uSjBXw0hGqjPJRoMu0NfZ4uJ24tluw&s",
+          rating: 5,
+          reviewsCount: 146,
+          category: "Instant Matcha",
+          type: "Multi Set",
+          flavour: "Spicy",
+          description: {
+            intro: "Udon Fresh Noodle through Japan.",
+            usage: [
+              "Boil noodles for 4 minutes.",
+              "Add toppings like egg or seaweed.",
+            ],
+            heatLevel: "Mild–Hot",
+            ingredients: "Wheat noodles, vegetable broth, dried garnish.",
+            allergens: "Contains wheat, soy.",
+            storage: "Store at room temperature.",
+          },
+          videos: ["https://www.youtube.com/embed/hi3xkK7pb6s"],
+          comments: ["A lifesaver for quick meals!", "Loved every flavor."],
+        },
+      ];
+
+      let currentList = [...products];
+
+      function openProduct(product) {
+        localStorage.setItem("selectedProduct", JSON.stringify(product));
+        window.location.href = "product.html";
+      }
+
+      const grid = document.getElementById("productsGrid");
+      const count = document.getElementById("productCount");
+      const sortSelect = document.getElementById("sortSelect");
+
+      function renderProducts(list) {
+        currentList = list;
+        grid.innerHTML = "";
+        count.textContent = `Products (${list.length})`;
+
+        list.forEach((p, index) => {
+          grid.innerHTML += `
+      <div class="product-card" data-index="${index}">
+        <img src="${p.image}" alt="${p.name}">
+        <p class="product-title">${p.name}</p>
+        <p class="product-price">$${p.price.toFixed(2)}</p>
+
+        <div class="rating-row">
+          ${getStars(p.rating)}
+          <span class="review-count">${p.reviewsCount} Reviews</span>
+        </div>
+      </div>
+    `;
+        });
+
+        document.querySelectorAll(".product-card").forEach((card, i) => {
+          card.addEventListener("click", () => openProduct(currentList[i]));
+        });
+      }
+
+      function getStars(rating) {
+        if (!rating) {
+          return `<span class="no-rating">No reviews</span>`;
+        }
+
+        let stars = "";
+        for (let i = 1; i <= 5; i++) {
+          stars +=
+            i <= rating
+              ? `<span class="star filled">★</span>`
+              : `<span class="star">★</span>`;
+        }
+        return stars;
+      }
+
+      const filterBtn = document.querySelector(".filter-btn");
+      const filterPanel = document.getElementById("filterPanel");
+
+      filterBtn.addEventListener("click", () => {
+        filterPanel.style.display =
+          filterPanel.style.display === "grid" ? "none" : "grid";
+      });
+
+      const checkboxes = document.querySelectorAll(".filter-panel input");
+
+      checkboxes.forEach((cb) => {
+        cb.addEventListener("change", applyFilters);
+      });
+
+      function applyFilters() {
+        const selectedCategories = getCheckedValues(0);
+        const selectedTypes = getCheckedValues(1);
+        const selectedFlavours = getCheckedValues(2);
+
+        const filtered = products.filter((p) => {
+          return (
+            (selectedCategories.length === 0 ||
+              selectedCategories.includes(p.category)) &&
+            (selectedTypes.length === 0 || selectedTypes.includes(p.type)) &&
+            (selectedFlavours.length === 0 ||
+              selectedFlavours.includes(p.flavour))
+          );
+        });
+
+        renderProducts(filtered);
+      }
+
+      function getCheckedValues(groupIndex) {
+        return [
+          ...document.querySelectorAll(
+            `.filter-group:nth-child(${groupIndex + 1}) input:checked`
+          ),
+        ].map((cb) => cb.value);
+      }
+
+      sortSelect.addEventListener("change", () => {
+        if (!sortSelect.value) return; // ignore default
+
+        let sorted = [...products];
+
+        if (sortSelect.value === "az") {
+          sorted.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        if (sortSelect.value === "za") {
+          sorted.sort((a, b) => b.name.localeCompare(a.name));
+        }
+        if (sortSelect.value === "priceLow") {
+          sorted.sort((a, b) => a.price - b.price);
+        }
+        if (sortSelect.value === "priceHigh") {
+          sorted.sort((a, b) => b.price - a.price);
+        }
+
+        renderProducts(sorted);
+      });
+
+      renderProducts(products);
+    </script>
+  </body>
+</html>
